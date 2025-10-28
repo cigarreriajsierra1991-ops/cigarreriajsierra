@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSierra - Cigarrería y Bar Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0f0f0f;
+            color: #d4af37;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px 0;
+            border-bottom: 2px solid #d4af37;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 10px 0;
+            background-color: rgba(0, 0, 0, 0.95);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            margin-left: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: #d4af37;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #d4af37;
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1572119865084-43d6c53d1c85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: #f5f5f5;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #d4af37;
+            color: #000;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 2px solid #d4af37;
+        }
+        
+        .btn:hover {
+            background-color: transparent;
+            color: #d4af37;
+        }
+        
+        /* Secciones */
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2.5rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background-color: #d4af37;
+            margin: 15px auto;
+        }
+        
+        /* Menú */
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background-color: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            padding: 12px 25px;
+            margin: 0 10px 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+        
+        .category-btn.active, .category-btn:hover {
+            background-color: #d4af37;
+            color: #000;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .menu-item {
+            background-color: #1a1a1a;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #d4af37;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-item h3 {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .price {
+            color: #d4af37;
+            font-weight: bold;
+        }
+        
+        .menu-item p {
+            color: #b3b3b3;
+        }
+        
+        /* Pedidos */
+        .order-section {
+            background-color: #1a1a1a;
+            padding: 60px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .order-section h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .order-section p {
+            margin-bottom: 30px;
+            color: #b3b3b3;
+            font-size: 1.1rem;
+        }
+        
+        .phone-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: #d4af37;
+            color: #000;
+            padding: 15px 35px;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 2px solid #d4af37;
+        }
+        
+        .phone-link i {
+            margin-right: 10px;
+        }
+        
+        .phone-link:hover {
+            background-color: transparent;
+            color: #d4af37;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #000;
+            padding: 70px 0 20px;
+            border-top: 2px solid #d4af37;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: #d4af37;
+            bottom: -8px;
+            left: 0;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #b3b3b3;
+            margin-bottom: 12px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #d4af37;
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #1a1a1a;
+            border-radius: 50%;
+            margin-right: 15px;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: #d4af37;
+            color: #000;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #b3b3b3;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.8rem;
+            }
+            
+            .menu-items {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .order-section {
+                padding: 40px 20px;
+            }
+            
+            .phone-link {
+                font-size: 1.2rem;
+                padding: 12px 25px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-cocktail logo-icon"></i>
+                <h1>JSierra</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#menu">Menú</a></li>
+                    <li><a href="#pedidos">Pedidos</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h2>JSierra - Cigarrería y Bar</h2>
+            <p>Donde los mejores tabacos y cocteles se encuentran con la excelencia</p>
+            <a href="#menu" class="btn">Descubre Nuestro Menú</a>
+        </div>
+    </section>
+
+    <!-- Menú -->
+    <section id="menu" class="container">
+        <h2 class="section-title">Nuestro Menú Exclusivo</h2>
+        
+        <div class="menu-categories">
+            <button class="category-btn active" data-category="tabacos">Tabacos Premium</button>
+            <button class="category-btn" data-category="bebidas">Bebidas & Cocteles</button>
+            <button class="category-btn" data-category="combos">Combos Especiales</button>
+        </div>
+        
+        <div class="menu-items">
+            <!-- Tabacos -->
+            <div class="menu-item tabacos">
+                <h3>Cohiba Behike <span class="price">$45</span></h3>
+                <p>Uno de los puros más exclusivos del mundo, con una complejidad de sabores excepcional.</p>
+            </div>
+            
+            <div class="menu-item tabacos">
+                <h3>Montecristo No. 2 <span class="price">$28</span></h3>
+                <p>Clásico puro cubano con forma de piramide, con notas de madera y especias.</p>
+            </div>
+            
+            <div class="menu-item tabacos">
+                <h3>Partagás Serie D No. 4 <span class="price">$25</span></h3>
+                <p>Robusto y lleno de carácter, con un final picante distintivo.</p>
+            </div>
+            
+            <div class="menu-item tabacos">
+                <h3>Romeo y Julieta Churchill <span class="price">$30</span></h3>
+                <p>Elegante y bien equilibrado, con notas de cedro y un toque de dulzura.</p>
+            </div>
+            
+            <!-- Bebidas -->
+            <div class="menu-item bebidas" style="display: none;">
+                <h3>Whisky Macallan 18 <span class="price">$35</span></h3>
+                <p>Single malt escocés con notas de frutos secos, especias y roble.</p>
+            </div>
+            
+            <div class="menu-item bebidas" style="display: none;">
+                <h3>Ron Zacapa 23 <span class="price">$22</span></h3>
+                <p>Ron guatemalteco añejado en barricas de jerez, con sabores a caramelo y frutas.</p>
+            </div>
+            
+            <div class="menu-item bebidas" style="display: none;">
+                <h3>Old Fashioned <span class="price">$18</span></h3>
+                <p>Clásico cóctel de whisky con azúcar, bitters y twist de naranja.</p>
+            </div>
+            
+            <div class="menu-item bebidas" style="display: none;">
+                <h3>Mojito Clásico <span class="price">$15</span></h3>
+                <p>Refrescante combinación de ron, lima, menta, azúcar y soda.</p>
+            </div>
+            
+            <!-- Combos -->
+            <div class="menu-item combos" style="display: none;">
+                <h3>Combo Clásico <span class="price">$50</span></h3>
+                <p>Montecristo No. 2 + Ron Zacapa 23. La combinación perfecta.</p>
+            </div>
+            
+            <div class="menu-item combos" style="display: none;">
+                <h3>Combo Premium <span class="price">$75</span></h3>
+                <p>Cohiba Behike + Whisky Macallan 18. Experiencia de lujo.</p>
+            </div>
+            
+            <div class="menu-item combos" style="display: none;">
+                <h3>Combo Iniciación <span class="price">$40</span></h3>
+                <p>Partagás Serie D No. 4 + Old Fashioned. Ideal para principiantes.</p>
+            </div>
+            
+            <div class="menu-item combos" style="display: none;">
+                <h3>Combo Relax <span class="price">$35</span></h3>
+                <p>Romeo y Julieta Churchill + Mojito Clásico. Perfecto para una tarde tranquila.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pedidos -->
+    <section id="pedidos" class="container">
+        <h2 class="section-title">Realiza tu Pedido</h2>
+        
+        <div class="order-section">
+            <h3>¿Listo para disfrutar de una experiencia única?</h3>
+            <p>Selecciona tus productos favoritos y realiza tu pedido llamando directamente a nuestro número. Nuestro equipo estará encantado de atenderte y preparar tu orden.</p>
+            <a href="tel:+1234567890" class="phone-link"><i class="fas fa-phone"></i> Llamar al +1 (234) 567-890</a>
+            <p style="margin-top: 20px;">Horario de atención: Lunes a Domingo de 4:00 PM a 2:00 AM</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>JSierra</h3>
+                    <p>Tu destino premium para disfrutar de los mejores tabacos y bebidas en un ambiente exclusivo y acogedor.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Av. Principal 123, Ciudad</p>
+                    <a href="tel:+1234567890"><i class="fas fa-phone"></i> +1 (234) 567-890</a>
+                    <a href="mailto:info@jsierra.com"><i class="fas fa-envelope"></i> info@jsierra.com</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Jueves: 4:00 PM - 12:00 AM</p>
+                    <p>Viernes y Sábado: 4:00 PM - 2:00 AM</p>
+                    <p>Domingo: 4:00 PM - 11:00 PM</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 JSierra - Cigarrería y Bar Premium. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funcionalidad para cambiar categorías del menú
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remover clase active de todos los botones
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Agregar clase active al botón clickeado
+                    this.classList.add('active');
+                    
+                    // Obtener la categoría seleccionada
+                    const selectedCategory = this.getAttribute('data-category');
+                    
+                    // Mostrar/ocultar elementos del menú según la categoría
+                    menuItems.forEach(item => {
+                        if (item.classList.contains(selectedCategory)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Smooth scrolling para enlaces internos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
